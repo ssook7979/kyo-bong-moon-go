@@ -1,6 +1,6 @@
 package com.kyobong.store.entity;
 
-import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -24,12 +24,13 @@ import com.kyobong.store.enums.Category;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Singular;
+import lombok.experimental.SuperBuilder;
 
+@SuperBuilder
 @Entity
 @Table(name = "TB_BOOK")
 @DynamicUpdate
@@ -60,21 +61,11 @@ public class Book extends BaseEntity {
 	@Enumerated(EnumType.ORDINAL)
 	@CollectionTable(name="book_category")
 	@Column(name="category", columnDefinition = "BIT(4)")
-	private Set<Category> categories;
+	private Set<Category> categories = new HashSet<>();
 	
 	@NotNull
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name="status")
 	private BookStatus status;
-
-	@Builder
-	public Book(Date createDate, Date modifiedDate, String registrator, String modifier, String title, String writer,
-			Set<Category> categories, BookStatus status) {
-		super(createDate, modifiedDate, registrator, modifier);
-		this.title = title;
-		this.writer = writer;
-		this.categories = categories;
-		this.status = status;
-	}
 
 }
