@@ -60,7 +60,7 @@ public class Book extends BaseEntity {
 	@ElementCollection(targetClass=Category.class)
 	@Enumerated(EnumType.ORDINAL)
 	@CollectionTable(name="book_category")
-	@Column(name="category", columnDefinition = "BIT(4)")
+	@Column(name="category")
 	private Set<Category> categories = new HashSet<>();
 	
 	@NotNull
