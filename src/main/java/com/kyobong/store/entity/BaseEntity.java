@@ -35,7 +35,7 @@ public class BaseEntity {
 
 	@Setter(AccessLevel.NONE)
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "modified_dt", nullable = false, updatable = false, columnDefinition = "DATETIME")
+	@Column(name = "modified_dt", nullable = true, updatable = false, columnDefinition = "DATETIME")
 	protected Date modifiedDateTime;
 
 	@Setter(AccessLevel.NONE)
