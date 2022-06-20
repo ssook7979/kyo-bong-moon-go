@@ -33,7 +33,7 @@ import lombok.Singular;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Book extends BaseModel {
+public class Book extends BaseEntity {
 	
 	@Id
 	@Setter(AccessLevel.NONE)
