@@ -10,5 +10,7 @@ import com.kyobong.store.enums.Category;
 public interface BookRepositoryCustom {
 	
 	List<Book> getList(String title, String writer, Category[] categories, BookStatus[] status);
+	
+	List<Book> getListByTitleAndWriter(String title, String writer);
 
 }
