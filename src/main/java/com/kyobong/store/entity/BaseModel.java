@@ -1,4 +1,4 @@
-package com.kyobong.store.model;
+package com.kyobong.store.entity;
 
 import java.util.Date;
 
