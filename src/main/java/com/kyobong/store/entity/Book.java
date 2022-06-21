@@ -1,6 +1,6 @@
 package com.kyobong.store.entity;
 
-import java.util.HashSet;
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,10 +25,10 @@ import com.kyobong.store.enums.Category;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Singular;
 import lombok.experimental.SuperBuilder;
 
 @SuperBuilder
@@ -56,12 +57,11 @@ public class Book extends BaseEntity {
 	private String writer;
 	
 	@NotNull
-	@Singular(value = "category")
-	@ElementCollection(targetClass=Category.class)
+	@ElementCollection(targetClass=Category.class, fetch = FetchType.EAGER)
 	@Enumerated(EnumType.ORDINAL)
 	@CollectionTable(name="book_category")
-	@Column(name="category")
-	private Set<Category> categories = new HashSet<>();
+	@Column(name="category", updatable = true, insertable = true)
+	private Set<Category> categories;
 	
 	@NotNull
 	@Enumerated(EnumType.ORDINAL)
