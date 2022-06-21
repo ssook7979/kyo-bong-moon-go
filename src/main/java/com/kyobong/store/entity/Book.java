@@ -1,6 +1,6 @@
 package com.kyobong.store.entity;
 
-import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -29,14 +30,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 
-@SuperBuilder
 @Entity
 @Table(name = "TB_BOOK")
 @DynamicUpdate
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Getter
 @Setter
 public class Book extends BaseEntity {
@@ -59,9 +59,12 @@ public class Book extends BaseEntity {
 	@NotNull
 	@ElementCollection(targetClass=Category.class, fetch = FetchType.EAGER)
 	@Enumerated(EnumType.ORDINAL)
-	@CollectionTable(name="book_category")
-	@Column(name="category", updatable = true, insertable = true)
-	private Set<Category> categories;
+	@CollectionTable(
+			name="book_category",
+			joinColumns=@JoinColumn(name = "book_id", referencedColumnName = "id"))
+	@Column(name="category")
+	@Builder.Default
+	private Set<Category> categories = new HashSet<>();
 	
 	@NotNull
 	@Enumerated(EnumType.ORDINAL)
