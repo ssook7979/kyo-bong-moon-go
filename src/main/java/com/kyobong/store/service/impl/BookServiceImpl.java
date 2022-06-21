@@ -40,6 +40,7 @@ public class BookServiceImpl implements BookService {
 				.map(bookConverter::toDto).collect(Collectors.toList());
 	}
 
+	@Transactional
 	@Override
 	public BookDto save(Book book) {
 		return bookConverter.toDto(repository.save(book));
