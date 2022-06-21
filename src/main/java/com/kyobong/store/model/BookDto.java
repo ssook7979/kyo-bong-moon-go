@@ -12,14 +12,17 @@ import com.kyobong.store.enums.Category;
 import com.kyobong.store.validation.group.OnCreate;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.Singular;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class BookDto {
 		
 	private Integer id;
@@ -33,6 +36,7 @@ public class BookDto {
 	private String writer;
 	
 	@NotNull(message = "카테고리를 입력해주세요.", groups = OnCreate.class)
+	@Singular
 	private List<Category> categories;
 	
 	@NotNull(message = "상태를 입력해주세요.", groups = OnCreate.class)
