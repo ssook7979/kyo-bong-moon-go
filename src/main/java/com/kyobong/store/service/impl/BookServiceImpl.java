@@ -42,8 +42,8 @@ public class BookServiceImpl implements BookService {
 
 	@Transactional
 	@Override
-	public BookDto save(Book book) {
-		return bookConverter.toDto(repository.save(book));
+	public BookDto save(BookDto dto) {
+		return bookConverter.toDto(repository.save(bookConverter.toEntity(dto)));
 	}
 
 }
