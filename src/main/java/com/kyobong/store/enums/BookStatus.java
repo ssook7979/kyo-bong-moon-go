@@ -18,4 +18,13 @@ public enum BookStatus {
 		this.displayName = displayName;
 	}
 	
+	public static BookStatus getByDisplayName(String displayName) {
+		for (BookStatus status: BookStatus.values()) {
+			if (status.displayName.equals(displayName)) {
+				return status;
+			}
+		}
+		return null;
+	}
+	
 }
