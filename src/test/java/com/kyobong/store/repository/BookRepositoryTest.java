@@ -114,43 +114,6 @@ class BookRepositoryTest {
 		assertThat(books.size()).isEqualTo(5);
 	}
 	
-	@Test
-	void test_searchByTitleAndWriter_returnsListContainingKeywords() {
-		for (int i = 0; i < 5; i++) {
-			Set<Category> categories = new HashSet<>();
-			categories.add(Category.LIBERAL_ARTS);
-			Book book = Book.builder()
-				.title("test" + i)
-				.categories(categories)
-				.status(BookStatus.OK)
-				.writer("park")
-				.build();
-			repo.save(book);
-		}
-		for (int i = 0; i < 5; i++) {
-			Set<Category> categories = new HashSet<>();
-			categories.add(Category.LIBERAL_ARTS);
-			Book book = Book.builder()
-				.title("test" + i)
-				.status(BookStatus.OK)
-				.categories(categories)
-				.writer("kim")
-				.build();
-			repo.save(book);
-		}
-		
-		List<Book> books = repo.getListByTitleAndWriter("test", "park");
-		
-		org.hamcrest.MatcherAssert.assertThat(
-				books,
-				allOf(
-					hasItem(Matchers.<Book>hasProperty("title", containsString("test"))),
-					hasItem(Matchers.<Book>hasProperty("writer", containsString("park")))
-				)
-		);
-		assertThat(books.size()).isEqualTo(5);
-	}
-	
 	@ParameterizedTest
 	@EnumSource(value = BookStatus.class)
 	void test_getListWithCentainStatus_returnsListContainingOnlyThatStatus(BookStatus status) {
