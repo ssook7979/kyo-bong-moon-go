@@ -3,15 +3,16 @@ package com.kyobong.store.service;
 import java.util.List;
 
 import com.kyobong.store.entity.Book;
+import com.kyobong.store.model.BookDto;
 
 public interface BookService {
 	
-	public List<Book> getBookList();
+	public List<BookDto> getBookList();
 	
-	public List<Book> getBookListByTitleAndWriter(String title, String writer);
+	public List<BookDto> getBookListByTitleAndWriter(String title, String writer);
 	
-	public List<Book> getBookListStatusOk();
+	public List<BookDto> getBookListStatusOk();
 	
-	public Book save(Book book);
+	public BookDto save(Book book);
 
 }
