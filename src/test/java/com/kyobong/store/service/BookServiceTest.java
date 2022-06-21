@@ -65,5 +65,15 @@ class BookServiceTest {
 		verify(repository, times(1)).findByStatus(BookStatus.OK);
 		verifyNoMoreInteractions(repository);		
 	}
+	
+	@Test
+	void testSave() {
+		when(repository.save(any())).thenReturn(books.get(0));
+		
+		service.save(books.get(0));
+		
+		verify(repository, times(1)).save(books.get(0));
+		verifyNoMoreInteractions(repository);		
+	}
 
 }

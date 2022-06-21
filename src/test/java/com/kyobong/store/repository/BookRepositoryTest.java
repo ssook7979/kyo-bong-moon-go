@@ -163,5 +163,33 @@ class BookRepositoryTest {
 		
 		assertThat(books.size()).isEqualTo(3);
 	}
+	
+	@Test
+	void test_saveBookOfExistingId_returnsBookUpdatedWithUserInput() {
+		Set<Category> categories = new HashSet<>();
+		categories.add(Category.LIBERAL_ARTS);
+		repo.save(
+			Book.builder()
+				.title("book before test")
+				.categories(categories)
+				.status(BookStatus.OK)
+				.writer("park")
+				.build()
+		);
+		
+		Book book = repo.getReferenceById(1);
+		book.setTitle("updated book");
+		book.getCategories().add(Category.IT);
+		
+		Book updated = repo.getReferenceById(1);
+		
+		assertThat(updated.getTitle()).isEqualTo("updated book");
+		
+		assertThat(updated.getStatus()).isEqualTo(BookStatus.OK);
+		assertThat(updated.getWriter()).isEqualTo("park");
+		assertThat(updated.getCategories()).containsAll(
+				Collections.arrayToList(Arrays.array(Category.LIBERAL_ARTS, Category.IT)));
+		
+	}
 
 }

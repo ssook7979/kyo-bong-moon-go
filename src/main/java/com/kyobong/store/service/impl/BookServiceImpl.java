@@ -32,4 +32,9 @@ public class BookServiceImpl implements BookService {
 		return repository.findByStatus(BookStatus.OK);
 	}
 
+	@Override
+	public Book save(Book book) {
+		return repository.save(book);
+	}
+
 }

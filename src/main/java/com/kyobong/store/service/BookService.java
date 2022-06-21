@@ -11,5 +11,7 @@ public interface BookService {
 	public List<Book> getBookListByTitleAndWriter(String title, String writer);
 	
 	public List<Book> getBookListStatusOk();
+	
+	public Book save(Book book);
 
 }
