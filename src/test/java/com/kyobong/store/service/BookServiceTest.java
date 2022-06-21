@@ -1,10 +1,15 @@
 package com.kyobong.store.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +36,10 @@ class BookServiceTest {
 	
 	@BeforeEach
 	void setUp() {
+		Set<Category> categories = new HashSet<>();
+		categories.add(Category.ECONOMY);
 		books = new ArrayList<>();
-		books.add(Book.builder().category(Category.ECONOMY).title("title").writer("writer").build());
+		books.add(Book.builder().categories(categories).title("title").writer("writer").build());
 	}
 	
 
