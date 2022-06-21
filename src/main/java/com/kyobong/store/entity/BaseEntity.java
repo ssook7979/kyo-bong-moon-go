@@ -21,9 +21,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
-@SuperBuilder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @MappedSuperclass
 public class BaseEntity {
@@ -38,16 +37,6 @@ public class BaseEntity {
 	@Column(name = "modified_dt", nullable = true, updatable = false, columnDefinition = "DATETIME")
 	protected Date modifiedDateTime;
 
-	@Setter(AccessLevel.NONE)
-	@Length(message="길이가 100보다 클 수 없습니다.", max = 100)
-	@Column(name = "registrator", length = 100)
-	protected String registrator;
-
-	@Setter(AccessLevel.NONE)
-	@Length(message="길이가 100보다 클 수 없습니다.", max = 100)
-	@Column(name = "modifier", length = 100)
-	protected String modifier;
-
 	public Date getCreateDateTime() {
 		return createDateTime;
 	}
@@ -56,29 +45,15 @@ public class BaseEntity {
 		return modifiedDateTime;
 	}		
 
-	public String getRegistrator() {
-		return registrator;
-	}
-
-	public String getModifier() {
-		return modifier;
-	}
-	
-	private String getCurrentUser() {
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		return ((UserDetails) principal).getUsername();
-	}
 	
 	@PrePersist
 	public void prePersist() {
 		this.createDateTime = new Date();
-		this.registrator = getCurrentUser();
 	}
 	
 	@PreUpdate
 	public void preUpdate() {
 		this.modifiedDateTime = new Date();
-		this.modifier = getCurrentUser();
 	}
 
 }
