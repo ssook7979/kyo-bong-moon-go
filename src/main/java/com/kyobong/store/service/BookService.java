@@ -17,5 +17,9 @@ public interface BookService {
 	public List<BookDto> getBookListStatusOk(Pageable pageable);
 	
 	public BookDto save(BookDto book);
+	
+	public BookDto getOne(Integer id);
+	
+	public BookDto update(Integer id, BookDto book);
 
 }

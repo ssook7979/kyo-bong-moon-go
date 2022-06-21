@@ -44,4 +44,23 @@ public class BookServiceImpl implements BookService {
 		return bookConverter.toDto(repository.save(bookConverter.toEntity(dto)));
 	}
 
+	@Override
+	public List<BookDto> getBookList(String title, String writer, Category[] categories, BookStatus[] statuses,
+			Pageable pageable) {
+		return repository.getListAsPage(title, writer, categories, statuses, pageable)
+				.getContent().stream().map(bookConverter::toDto).collect(Collectors.toList());
+	}
+	
+	@Override
+	public BookDto getOne(Integer id) {
+		return bookConverter.toDto(repository.findById(id).orElseThrow());
+	}
+	
+	@Override
+	public BookDto update(Integer id, BookDto dto) {
+		Book book = repository.findById(id).orElseThrow();
+		return save(bookConverter
+				.toDto(bookConverter.updateEntity(book, dto)));
+	}
+
 }
