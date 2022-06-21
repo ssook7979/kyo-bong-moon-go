@@ -16,4 +16,13 @@ public enum Category {
 		this.displayName = displayName;
 	}
 	
+	public Category getByDisplayName(String displayName) {
+		for (Category category: Category.values()) {
+			if (category.displayName == displayName) {
+				return category;
+			}
+		}
+		return null;
+	}
+	
 }
