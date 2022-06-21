@@ -3,9 +3,10 @@ package com.kyobong.store.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
-import com.kyobong.store.entity.Book;
 import com.kyobong.store.enums.BookStatus;
 import com.kyobong.store.model.BookConverter;
 import com.kyobong.store.model.BookDto;
