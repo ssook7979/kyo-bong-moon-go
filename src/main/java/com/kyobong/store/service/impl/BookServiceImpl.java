@@ -5,9 +5,12 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.kyobong.store.entity.Book;
 import com.kyobong.store.enums.BookStatus;
+import com.kyobong.store.enums.Category;
 import com.kyobong.store.model.BookConverter;
 import com.kyobong.store.model.BookDto;
 import com.kyobong.store.repository.BookRepository;
@@ -24,20 +27,14 @@ public class BookServiceImpl implements BookService {
 	private final BookConverter bookConverter;
 
 	@Override
-	public List<BookDto> getBookList() {
-		return repository.findAll().stream()
-				.map(bookConverter::toDto).collect(Collectors.toList());
-	}
-
-	@Override
-	public List<BookDto> getBookListByTitleAndWriter(String title, String writer) {
-		return repository.getListByTitleAndWriter(title, writer).stream()
+	public List<BookDto> getBookList(Pageable pageable) {
+		return repository.findAll(pageable).getContent().stream()
 				.map(bookConverter::toDto).collect(Collectors.toList());
 	}
 	
 	@Override
-	public List<BookDto> getBookListStatusOk() {
-		return repository.findByStatus(BookStatus.OK).stream()
+	public List<BookDto> getBookListStatusOk(Pageable pageable) {
+		return repository.findByStatus(BookStatus.OK, pageable).stream()
 				.map(bookConverter::toDto).collect(Collectors.toList());
 	}
 

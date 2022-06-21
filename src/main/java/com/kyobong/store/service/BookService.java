@@ -2,15 +2,19 @@ package com.kyobong.store.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
+
+import com.kyobong.store.enums.BookStatus;
+import com.kyobong.store.enums.Category;
 import com.kyobong.store.model.BookDto;
 
 public interface BookService {
 	
-	public List<BookDto> getBookList();
+	public List<BookDto> getBookList(Pageable pageable);
 	
-	public List<BookDto> getBookListByTitleAndWriter(String title, String writer);
+	public List<BookDto> getBookList(String title, String writer, Category[] categories, BookStatus[] statuses, Pageable pageable);
 	
-	public List<BookDto> getBookListStatusOk();
+	public List<BookDto> getBookListStatusOk(Pageable pageable);
 	
 	public BookDto save(BookDto book);
 

@@ -2,6 +2,10 @@ package com.kyobong.store.repository.querydsl;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+
 import com.kyobong.store.entity.Book;
 import com.kyobong.store.entity.QBook;
 import com.kyobong.store.enums.BookStatus;
@@ -36,15 +40,50 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
 		}
 		return query.fetch();
 	}
+	
+	private long count(String title, String writer, Category[] categories, BookStatus[] status) {
+		JPAQuery<Book> query = queryFactory.selectFrom(book);
+		if (!StringUtils.isNullOrEmpty(title)) {
+			query = query.where(book.title.containsIgnoreCase(title));
+		}
+		if (!StringUtils.isNullOrEmpty(writer)) {
+			query = query.where(book.writer.containsIgnoreCase(writer));
+		}
+		if (categories != null) {
+			query = query.where(book.categories.any().in(categories));
+		}
+		if (status != null) {
+			query = query.where(book.status.in(status));
+		}
+		return query.fetch().size();
+	}
 
 	@Override
-	public List<Book> getListByTitleAndWriter(String title, String writer) {
-		return queryFactory.selectFrom(book)
-				.where(
-					book.title.containsIgnoreCase(title)
-					.and(book.writer.containsIgnoreCase(writer))
-				)
-				.fetch();
+	public Page<Book> getListAsPage(String title, String writer, Category[] categories, BookStatus[] status,
+			Pageable pageable) {
+		JPAQuery<Book> query = queryFactory.selectFrom(book);
+		if (!StringUtils.isNullOrEmpty(title)) {
+			query = query.where(book.title.containsIgnoreCase(title));
+		}
+		if (!StringUtils.isNullOrEmpty(writer)) {
+			query = query.where(book.writer.containsIgnoreCase(writer));
+		}
+		if (categories != null) {
+			query = query.where(book.categories.any().in(categories));
+		}
+		if (status != null) {
+			query = query.where(book.status.in(status));
+		}
+		if (pageable != null) {
+			query = query.offset(pageable.getOffset()).limit(pageable.getPageSize());
+		}
+		return new PageImpl<>(query.fetch(), pageable, count(title, writer, categories, status));
 	}
+
+	@Override
+	public Page<Book> getListAsPage(Pageable pageable) {
+		return getListAsPage(null, null, null, null, pageable);
+	}
+
 	
 }

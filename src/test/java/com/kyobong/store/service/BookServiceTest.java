@@ -6,9 +6,8 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -16,10 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import com.kyobong.store.entity.Book;
 import com.kyobong.store.enums.BookStatus;
 import com.kyobong.store.enums.Category;
+import com.kyobong.store.model.BookConverter;
+import com.kyobong.store.model.BookDto;
 import com.kyobong.store.repository.BookRepository;
 import com.kyobong.store.service.impl.BookServiceImpl;
 
@@ -32,54 +36,56 @@ class BookServiceTest {
 	@MockBean
 	private BookRepository repository;
 	
-	List<Book> books;
+	@MockBean
+	private BookConverter converter;
+	
+	Page<Book> books;
+	
+	Book book;
+	
+	BookDto dto;
 	
 	@BeforeEach
 	void setUp() {
 		Set<Category> categories = new HashSet<>();
 		categories.add(Category.ECONOMY);
-		books = new ArrayList<>();
-		books.add(Book.builder().categories(categories).title("title").writer("writer").build());
+		books = new PageImpl<>(Collections.singletonList(
+				Book.builder().categories(categories).title("title").writer("writer").build()));
+		book = Book.builder().categories(categories).title("title").writer("writer").build();
+		dto = BookDto.builder().category(Category.ECONOMY).title("title").writer("writer").build();
 	}
 	
 
 	@Test
 	void testGetBookList() {
-		when(repository.findAll()).thenReturn(books);
+		PageRequest pageable = PageRequest.of(1, 10);
+		when(repository.findAll(pageable)).thenReturn(books);
 		
-		service.getBookList();
+		service.getBookList(pageable);
 		
-		verify(repository, times(1)).findAll();
-		verifyNoMoreInteractions(repository);
-	}
-	
-	@Test
-	void testGetBookListByTitleAndWriter() {
-		when(repository.getListByTitleAndWriter(any(), any())).thenReturn(books);
-		
-		service.getBookListByTitleAndWriter("title", "writer");
-		
-		verify(repository, times(1)).getListByTitleAndWriter(any(), any());
+		verify(repository, times(1)).findAll(pageable);
 		verifyNoMoreInteractions(repository);
 	}
 	
 	@Test
 	void testGetBookListStatusOk() {
-		when(repository.findByStatus(BookStatus.OK)).thenReturn(books);
+		PageRequest pageable = PageRequest.of(1, 10);
+		when(repository.findByStatus(BookStatus.OK, pageable)).thenReturn(books);
 		
-		service.getBookListStatusOk();
+		service.getBookListStatusOk(pageable);
 		
-		verify(repository, times(1)).findByStatus(BookStatus.OK);
+		verify(repository, times(1)).findByStatus(BookStatus.OK, pageable);
 		verifyNoMoreInteractions(repository);		
 	}
-	
+
 	@Test
 	void testSave() {
-		when(repository.save(any())).thenReturn(books.get(0));
+		when(repository.save(any())).thenReturn(book);
+		when(converter.toEntity(any())).thenReturn(book);
 		
-		service.save(books.get(0));
+		service.save(dto);
 		
-		verify(repository, times(1)).save(books.get(0));
+		verify(repository, times(1)).save(book);
 		verifyNoMoreInteractions(repository);		
 	}
 
