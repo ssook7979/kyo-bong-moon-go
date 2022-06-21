@@ -16,9 +16,9 @@ public enum Category {
 		this.displayName = displayName;
 	}
 	
-	public Category getByDisplayName(String displayName) {
+	public static Category getByDisplayName(String displayName) {
 		for (Category category: Category.values()) {
-			if (category.displayName == displayName) {
+			if (category.displayName.equals(displayName)) {
 				return category;
 			}
 		}
