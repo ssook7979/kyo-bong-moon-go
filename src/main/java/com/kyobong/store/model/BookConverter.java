@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.kyobong.store.entity.Book;
 import com.kyobong.store.enums.Category;
+import com.querydsl.core.util.StringUtils;
 
 @Component
 public class BookConverter {
@@ -37,5 +38,24 @@ public class BookConverter {
 			entity.getCategories().add(category);
 		}
 		return entity;		
+	}
+	
+	public Book updateEntity(Book book, BookDto dto) {
+		if (!StringUtils.isNullOrEmpty(dto.getTitle())) {
+			book.setTitle(dto.getTitle());
+		}
+		if (!StringUtils.isNullOrEmpty(dto.getWriter())) {
+			book.setWriter(dto.getWriter());
+		}
+		if (dto.getStatus() != null) {
+			book.setStatus(dto.getStatus());
+		}
+		if (dto.getCategories() != null && dto.getCategories().size() > 0) {
+			book.getCategories().clear();
+			for (Category category: dto.getCategories()) {
+				book.getCategories().add(category);
+			}			
+		}
+		return book;
 	}
 }
