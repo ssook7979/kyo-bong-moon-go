@@ -52,7 +52,7 @@ public class SecurityConfig {
 			.csrf().disable()
 			.authorizeHttpRequests()
 				.antMatchers("/token").permitAll()
-				.anyRequest().hasAuthority("Admin")
+				.anyRequest().authenticated()
 			.and()
 			.exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint)
 			.and()
