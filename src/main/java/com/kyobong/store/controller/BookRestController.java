@@ -24,8 +24,11 @@ import com.kyobong.store.service.BookService;
 import com.kyobong.store.validation.group.OnCreate;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Books")
 @Validated
 @RequiredArgsConstructor
 @RequestMapping("books")
@@ -33,8 +36,9 @@ import lombok.RequiredArgsConstructor;
 public class BookRestController {
 	
 	private final BookService service;
-
-	@Operation(summary = "get book list")
+	
+	@Parameter()
+	@Operation(summary = "get a book list")
 	@GetMapping(path = "", produces = { "application/json" })
 	public List<BookDto> listBooks(
 			@RequestParam(value = "title", required = false) String title,
@@ -53,7 +57,7 @@ public class BookRestController {
 		);
 	}
 	
-	@Operation(summary = "get a book by a specific id")
+	@Operation(summary = "get a book by its id")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(path = "{id}", produces = { "application/json" })
 	public BookDto book(@PathVariable(value = "id") Integer id) {

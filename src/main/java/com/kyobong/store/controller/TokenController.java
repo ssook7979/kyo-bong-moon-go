@@ -15,8 +15,11 @@ import com.kyobong.store.security.JwtUserDetailsService;
 import com.kyobong.store.security.model.JwtRequest;
 import com.kyobong.store.security.model.JwtResponse;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Token")
 @RequiredArgsConstructor
 @RestController
 public class TokenController {
@@ -27,6 +30,7 @@ public class TokenController {
 	
 	private final JwtUserDetailsService userDetailsService;
 	
+	@Operation(summary = "create jwt token")
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@RequestMapping(value = "/token", method = RequestMethod.POST)
 	public JwtResponse createToken(@RequestBody JwtRequest request) {
