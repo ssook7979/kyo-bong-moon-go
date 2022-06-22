@@ -29,13 +29,13 @@ import lombok.RequiredArgsConstructor;
 
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/")
+@RequestMapping("books")
 @RestController
 public class BookRestController {
 	
 	private final BookService service;
 
-	@GetMapping(path = "books", produces = { "application/json" })
+	@GetMapping(path = "", produces = { "application/json" })
 	public List<BookDto> listBooks(
 			@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "writer", required = false) String writer,
@@ -54,20 +54,20 @@ public class BookRestController {
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@GetMapping(path = "books/{id}", produces = { "application/json" })
+	@GetMapping(path = "{id}", produces = { "application/json" })
 	public BookDto book(@PathVariable(value = "id") Integer id) {
 		return service.getOne(id);
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
 	@Validated(OnCreate.class)
-	@PostMapping(path = "books", produces = { "application/json" })
+	@PostMapping(path = "", produces = { "application/json" })
 	public BookDto create(@Valid@RequestBody BookDto dto) {
 		return service.save(dto);
 	}
 	
 	@ResponseStatus(HttpStatus.OK)
-	@PatchMapping(path = "books/{id}", produces = { "application/json" })
+	@PatchMapping(path = "{id}", produces = { "application/json" })
 	public BookDto update(@PathVariable(name = "id", required = true) Integer id, @Valid@RequestBody BookDto dto) {
 		return service.update(id, dto);
 	}
