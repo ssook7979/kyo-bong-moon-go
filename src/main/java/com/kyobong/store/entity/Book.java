@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.validator.constraints.Length;
@@ -47,16 +48,17 @@ public class Book extends BaseEntity {
 	private Integer id;
 	
 	@NotEmpty(message = "제목을 입력해주세요.")
-	@Length(min = 0, max = 100, message = "제목은 최대 100자를 넘을수 없습니다." )
+	@Length(min = 1, max = 100, message = "제목은 최대 100자를 넘을수 없습니다." )
 	@Column(name = "title", length = 100, nullable=false)
 	private String title;
 
 	@NotEmpty(message = "지은이의 이름을 입력해주세요.")
-	@Length(min = 0, max = 20, message = "지은이의 이름은 최대 20자를 넘을수 없습니다." )
+	@Length(min = 1, max = 20, message = "지은이의 이름은 최대 20자를 넘을수 없습니다." )
 	@Column(name = "writer", length = 20, nullable=false)
 	private String writer;
 	
 	@NotNull
+	@Size(min = 1, message = "카테고리는 1개 이상 지정해야 합니다.")
 	@ElementCollection(targetClass=Category.class, fetch = FetchType.EAGER)
 	@Enumerated(EnumType.ORDINAL)
 	@CollectionTable(
