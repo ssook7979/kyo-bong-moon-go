@@ -3,11 +3,12 @@ package com.kyobong.store.controller;
 import java.util.NoSuchElementException;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class ControllerExceptionHandler {
 	
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
@@ -18,9 +19,9 @@ public class ControllerExceptionHandler {
 	}
 	
 	@ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
-	@ExceptionHandler({ IllegalArgumentException.class })
-	public String handleIllegalArgumentException(IllegalArgumentException e) {
-		return e.getMessage();
+	@ExceptionHandler({ HttpMessageNotReadableException.class })
+	public String handleIllegalArgumentException(HttpMessageNotReadableException e) {
+		return e.getCause().getMessage();
 	}
 
 }
