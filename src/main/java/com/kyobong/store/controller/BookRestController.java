@@ -71,12 +71,5 @@ public class BookRestController {
 	public BookDto update(@PathVariable(name = "id", required = true) Integer id, @Valid@RequestBody BookDto dto) {
 		return service.update(id, dto);
 	}
-	
-	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	@ExceptionHandler({ NoSuchElementException.class })
-	public String handleNoSuchElementException(NoSuchElementException e) {
-		return e.getMessage();
-		
-	}
-	
+
 }
