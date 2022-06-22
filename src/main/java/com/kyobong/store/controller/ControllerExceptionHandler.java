@@ -14,6 +14,7 @@ import javax.validation.Path;
 import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -66,6 +67,12 @@ public class ControllerExceptionHandler {
 		}
 		
 		return errors;
+	}
+	
+	@ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
+	@ExceptionHandler({ BadCredentialsException.class })
+	public String handleBadCredentialsException(BadCredentialsException e) {
+		return e.getMessage();
 	}
 	
 	private String getFieldFromPath(Path fieldPath) {
