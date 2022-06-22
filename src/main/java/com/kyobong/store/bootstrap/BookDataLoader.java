@@ -27,14 +27,6 @@ public class BookDataLoader implements CommandLineRunner {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] inputs = line.split(",");
-				/*
-				service.save(BookDto.builder()
-						.category(Category.getByDisplayName(inputs[0]))
-						.title(inputs[1])
-						.writer(inputs[2])
-						.status(BookStatus.OK)
-						.build()
-				);*/
 				Book book = Book.builder()
 						.title(inputs[1])
 						.writer(inputs[2])
