@@ -4,6 +4,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
@@ -32,11 +33,18 @@ public class BookRestControllerTest {
     
     @Autowired
     private JwtTokenUtil tokenUtil;
+    
+    private String validToken;
+    
+    @BeforeEach
+    public void setUp() {
+    	validToken = tokenUtil.generateToken(new TestUserDetails("testuser"));
+    }
 
     @Test
     public void test_callMethodWithoutToken_returns401() throws Exception {
         mockMvc
-            .perform(get("/api/v1/books"))
+            .perform(get("/books"))
             .andExpect(status().isUnauthorized());
             
     }
@@ -45,7 +53,7 @@ public class BookRestControllerTest {
     public void test_callMethodWithTokenOfUserNotValid_returns401() throws Exception {
     	String token = tokenUtil.generateToken(new TestUserDetails("notexist"));
     	mockMvc
-    		.perform(get("/api/v1/books").header("Authorization", "Bearer " + token))
+    		.perform(get("/books").header("Authorization", "Bearer " + token))
     		.andDo(print())
     		.andExpect(status().isUnauthorized());
     }
@@ -53,19 +61,17 @@ public class BookRestControllerTest {
     @Test
     public void test_callMethodWithInvalidToken_returns401() throws Exception {
     	mockMvc
-    	.perform(get("/api/v1/books").header("Authorization", "Bearer " + "I'mToken"))
-    	.andDo(print())
-    	.andExpect(status().isUnauthorized());
+	    	.perform(get("/books").header("Authorization", "Bearer " + "I'mToken"))
+	    	.andDo(print())
+	    	.andExpect(status().isUnauthorized());
     }
     
     @Test
     public void test_callBookListMethod_returnsOk() throws Exception {
-    	String token = tokenUtil.generateToken(new TestUserDetails("notexist"));
     	mockMvc
-    	.perform(get("/api/v1/books").header("Authorization", "Bearer " + token))
-    	.andDo(print())
-    	.andExpect(status().isUnauthorized());
+	    	.perform(get("/books").header("Authorization", "Bearer " + validToken))
+	    	.andDo(print())
+	    	.andExpect(status().isOk());
     }
-
     
 }
