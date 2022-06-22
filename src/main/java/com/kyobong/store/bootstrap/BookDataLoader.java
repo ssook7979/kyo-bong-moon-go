@@ -9,9 +9,7 @@ import org.springframework.stereotype.Component;
 import com.kyobong.store.entity.Book;
 import com.kyobong.store.enums.BookStatus;
 import com.kyobong.store.enums.Category;
-import com.kyobong.store.model.BookDto;
 import com.kyobong.store.repository.BookRepository;
-import com.kyobong.store.service.BookService;
 
 import lombok.RequiredArgsConstructor;
 
