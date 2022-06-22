@@ -22,58 +22,37 @@ public class BookRepositoryCustomImpl implements BookRepositoryCustom {
 	private final QBook book = QBook.book;
 	
 	private final JPAQueryFactory queryFactory;
+	
+	private JPAQuery<Book> getBaseQuery(String title, String writer, Category[] categories, BookStatus[] status) {
+		JPAQuery<Book> query = queryFactory.selectFrom(book);
+		if (!StringUtils.isNullOrEmpty(title)) {
+			query = query.where(book.title.containsIgnoreCase(title));
+		}
+		if (!StringUtils.isNullOrEmpty(writer)) {
+			query = query.where(book.writer.containsIgnoreCase(writer));
+		}
+		if (categories != null) {
+			query = query.where(book.categories.any().in(categories));
+		}
+		if (status != null) {
+			query = query.where(book.status.in(status));
+		}
+		return query;
+	}
 
 	@Override
 	public List<Book> getList(String title, String writer, Category[] categories, BookStatus[] status) {
-		JPAQuery<Book> query = queryFactory.selectFrom(book);
-		if (!StringUtils.isNullOrEmpty(title)) {
-			query = query.where(book.title.containsIgnoreCase(title));
-		}
-		if (!StringUtils.isNullOrEmpty(writer)) {
-			query = query.where(book.writer.containsIgnoreCase(writer));
-		}
-		if (categories != null) {
-			query = query.where(book.categories.any().in(categories));
-		}
-		if (status != null) {
-			query = query.where(book.status.in(status));
-		}
-		return query.fetch();
+		return getBaseQuery(title, writer, categories, status).fetch();
 	}
 	
 	private long count(String title, String writer, Category[] categories, BookStatus[] status) {
-		JPAQuery<Book> query = queryFactory.selectFrom(book);
-		if (!StringUtils.isNullOrEmpty(title)) {
-			query = query.where(book.title.containsIgnoreCase(title));
-		}
-		if (!StringUtils.isNullOrEmpty(writer)) {
-			query = query.where(book.writer.containsIgnoreCase(writer));
-		}
-		if (categories != null) {
-			query = query.where(book.categories.any().in(categories));
-		}
-		if (status != null) {
-			query = query.where(book.status.in(status));
-		}
-		return query.fetch().size();
+		return getBaseQuery(title, writer, categories, status).fetch().size();
 	}
 
 	@Override
 	public Page<Book> getListAsPage(String title, String writer, Category[] categories, BookStatus[] status,
 			Pageable pageable) {
-		JPAQuery<Book> query = queryFactory.selectFrom(book);
-		if (!StringUtils.isNullOrEmpty(title)) {
-			query = query.where(book.title.containsIgnoreCase(title));
-		}
-		if (!StringUtils.isNullOrEmpty(writer)) {
-			query = query.where(book.writer.containsIgnoreCase(writer));
-		}
-		if (categories != null) {
-			query = query.where(book.categories.any().in(categories));
-		}
-		if (status != null) {
-			query = query.where(book.status.in(status));
-		}
+		JPAQuery<Book> query = getBaseQuery(title, writer, categories, status);
 		if (pageable != null) {
 			query = query.offset(pageable.getOffset()).limit(pageable.getPageSize());
 		}
