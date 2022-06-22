@@ -1,6 +1,7 @@
 package com.kyobong.store.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.kyobong.store.security.JwtTokenUtil;
 import com.kyobong.store.service.BookService;
+import com.kyobong.store.utils.TestUserDetails;
 
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @SpringBootTest
@@ -26,13 +29,43 @@ public class BookRestControllerTest {
 
     @MockBean
     private BookService service;
+    
+    @Autowired
+    private JwtTokenUtil tokenUtil;
 
     @Test
-    public void test_bookListGetMethodWithoutToken_returns401() throws Exception {
+    public void test_callMethodWithoutToken_returns401() throws Exception {
         mockMvc
             .perform(get("/api/v1/books"))
             .andExpect(status().isUnauthorized());
             
     }
+    
+    @Test
+    public void test_callMethodWithTokenOfUserNotValid_returns401() throws Exception {
+    	String token = tokenUtil.generateToken(new TestUserDetails("notexist"));
+    	mockMvc
+    		.perform(get("/api/v1/books").header("Authorization", "Bearer " + token))
+    		.andDo(print())
+    		.andExpect(status().isUnauthorized());
+    }
+    
+    @Test
+    public void test_callMethodWithInvalidToken_returns401() throws Exception {
+    	mockMvc
+    	.perform(get("/api/v1/books").header("Authorization", "Bearer " + "I'mToken"))
+    	.andDo(print())
+    	.andExpect(status().isUnauthorized());
+    }
+    
+    @Test
+    public void test_callBookListMethod_returnsOk() throws Exception {
+    	String token = tokenUtil.generateToken(new TestUserDetails("notexist"));
+    	mockMvc
+    	.perform(get("/api/v1/books").header("Authorization", "Bearer " + token))
+    	.andDo(print())
+    	.andExpect(status().isUnauthorized());
+    }
 
+    
 }
