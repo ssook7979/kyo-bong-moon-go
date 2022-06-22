@@ -6,6 +6,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -51,7 +52,7 @@ public class SecurityConfig {
 		http
 			.csrf().disable()
 			.authorizeHttpRequests()
-				.antMatchers("/token").permitAll()
+				.antMatchers("/token", "/doc.html", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
 				.anyRequest().authenticated()
 			.and()
 			.exceptionHandling().authenticationEntryPoint(jwtAuthEntryPoint)
@@ -67,6 +68,12 @@ public class SecurityConfig {
 			AuthenticationConfiguration authenticationConfiguration) throws Exception {
 		
 		return authenticationConfiguration.getAuthenticationManager();
+	}
+	
+	@Bean
+	public WebSecurityCustomizer webSecurityCustomizer() {
+		return (web) -> web.ignoring()
+				.antMatchers("/token", "/doc.html", "/api-docs/**", "/swagger-ui/**", "/v3/api-docs/**");
 	}
 
 }
