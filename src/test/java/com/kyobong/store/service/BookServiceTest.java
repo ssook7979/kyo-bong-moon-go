@@ -20,7 +20,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import com.kyobong.store.entity.Book;
-import com.kyobong.store.enums.BookStatus;
 import com.kyobong.store.enums.Category;
 import com.kyobong.store.model.BookConverter;
 import com.kyobong.store.model.BookDto;
@@ -65,17 +64,6 @@ class BookServiceTest {
 		
 		verify(repository, times(1)).findAll(pageable);
 		verifyNoMoreInteractions(repository);
-	}
-	
-	@Test
-	void testGetBookListStatusOk() {
-		PageRequest pageable = PageRequest.of(1, 10);
-		when(repository.findByStatus(BookStatus.OK, pageable)).thenReturn(books);
-		
-		service.getBookListStatusOk(pageable);
-		
-		verify(repository, times(1)).findByStatus(BookStatus.OK, pageable);
-		verifyNoMoreInteractions(repository);		
 	}
 
 	@Test
