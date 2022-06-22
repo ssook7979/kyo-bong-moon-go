@@ -35,7 +35,8 @@ public enum BookStatus {
 				return status;
 			}
 		}
-		throw new IllegalArgumentException("The values accepted for this field is " + getAllDisplayNames());
+		throw new IllegalArgumentException(
+				"The values accepted for this field is " + getAllDisplayNames());
 	}
 	
 }
