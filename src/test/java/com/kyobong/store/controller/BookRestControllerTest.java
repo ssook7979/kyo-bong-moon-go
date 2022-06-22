@@ -23,8 +23,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kyobong.store.entity.Book;
 import com.kyobong.store.security.JwtTokenUtil;
 import com.kyobong.store.service.BookService;
 import com.kyobong.store.utils.TestUserDetails;

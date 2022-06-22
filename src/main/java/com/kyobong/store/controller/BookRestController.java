@@ -53,18 +53,21 @@ public class BookRestController {
 		);
 	}
 	
+	@Operation(summary = "get a book by a specific id")
 	@ResponseStatus(HttpStatus.OK)
 	@GetMapping(path = "{id}", produces = { "application/json" })
 	public BookDto book(@PathVariable(value = "id") Integer id) {
 		return service.getOne(id);
 	}
 	
+	@Operation(summary = "create a book")
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping(path = "", produces = { "application/json" })
 	public BookDto create(@Validated(OnCreate.class) @RequestBody BookDto dto) {
 		return service.save(dto);
 	}
 	
+	@Operation(summary = "edit information of a book")
 	@ResponseStatus(HttpStatus.OK)
 	@PatchMapping(path = "{id}", produces = { "application/json" })
 	public BookDto update(@PathVariable(name = "id", required = true) Integer id, @Valid@RequestBody BookDto dto) {

@@ -24,15 +24,6 @@ class TokenControllerTest {
     @Autowired
     private MockMvc mockMvc;
     
-    @Autowired
-	private AuthenticationManager authenticationManager;
-    
-    @Autowired
-	private JwtTokenUtil tokenUtil;
-    
-    @Autowired
-	private JwtUserDetailsService userDetailsService;
-    
     private ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
