@@ -44,9 +44,6 @@ public class BookRestControllerTest extends RequestBodyResources {
     @Autowired
     private JwtTokenUtil tokenUtil;
     
-    @Autowired
-    private ObjectMapper objectMapper;
-    
     private String validToken;
     
     @BeforeEach
