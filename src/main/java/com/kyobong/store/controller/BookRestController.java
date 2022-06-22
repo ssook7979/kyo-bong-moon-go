@@ -24,10 +24,11 @@ import com.kyobong.store.service.BookService;
 import com.kyobong.store.validation.group.OnCreate;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@SecurityRequirement(name = "token")
 @Tag(name = "Books")
 @Validated
 @RequiredArgsConstructor
@@ -37,14 +38,13 @@ public class BookRestController {
 	
 	private final BookService service;
 	
-	@Parameter()
 	@Operation(summary = "get a book list")
 	@GetMapping(path = "", produces = { "application/json" })
 	public List<BookDto> listBooks(
 			@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "writer", required = false) String writer,
 			@RequestParam(value = "category", required = false) Category[] categories,
-			@RequestParam(value = "status", required = false, defaultValue = "이용가능") BookStatus[] statuses,
+			@RequestParam(value = "status", required = false, defaultValue = "OK") BookStatus[] statuses,
 			@RequestParam(value = "page-number", required = false, defaultValue = "1") Integer pageNumber,
 			@RequestParam(value = "page-size", required = false, defaultValue = "10") Integer pageSize) {
 		

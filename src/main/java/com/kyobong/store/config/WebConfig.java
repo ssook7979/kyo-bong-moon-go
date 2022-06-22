@@ -7,7 +7,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import com.kyobong.store.enums.converter.StringToBookStatus;
 import com.kyobong.store.enums.converter.StringToCategory;
 
-@Configuration
+// @Configuration
 public class WebConfig implements WebMvcConfigurer {
 	
 	@Override
