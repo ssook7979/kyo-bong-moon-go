@@ -1,5 +1,6 @@
 package com.kyobong.store.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -8,6 +9,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -75,6 +78,53 @@ class BookServiceTest {
 		
 		verify(repository, times(1)).save(book);
 		verifyNoMoreInteractions(repository);		
+	}
+	
+	@Test
+	void test_getOneWithInvalidId_throwsException() {
+		when(repository.findById(any())).thenReturn(Optional.empty());
+		
+		assertThrows(NoSuchElementException.class, () -> {
+			service.getOne(100);			
+		});
+		
+		verify(repository, times(1)).findById(100);
+		verifyNoMoreInteractions(repository);			
+	}
+	
+	@Test
+	void testGetOne() {
+		when(repository.findById(any())).thenReturn(Optional.of(book));
+		
+		service.getOne(1);
+		
+		verify(repository, times(1)).findById(1);
+		verifyNoMoreInteractions(repository);			
+	}
+	
+	@Test
+	void testUpdate() {
+		when(repository.findById(any())).thenReturn(Optional.of(book));
+		when(repository.save(any())).thenReturn(book);
+		when(converter.toEntity(any())).thenReturn(book);
+		
+		service.update(1, dto);
+		
+		verify(repository, times(1)).findById(1);
+		verify(repository, times(1)).save(book);
+		verifyNoMoreInteractions(repository);			
+	}
+	
+	@Test
+	void test_UpdateBookWithInvalidId_throwsException() {
+		when(repository.findById(any())).thenReturn(Optional.empty());
+		
+		assertThrows(NoSuchElementException.class, () -> {
+			service.getOne(100);			
+		});
+		
+		verify(repository, times(1)).findById(100);
+		verifyNoMoreInteractions(repository);				
 	}
 
 }
