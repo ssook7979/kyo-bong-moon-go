@@ -60,9 +60,8 @@ public class BookRestController {
 	}
 	
 	@ResponseStatus(HttpStatus.CREATED)
-	@Validated(OnCreate.class)
 	@PostMapping(path = "", produces = { "application/json" })
-	public BookDto create(@Valid@RequestBody BookDto dto) {
+	public BookDto create(@Validated(OnCreate.class) @RequestBody BookDto dto) {
 		return service.save(dto);
 	}
 	
