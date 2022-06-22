@@ -31,12 +31,6 @@ public class BookServiceImpl implements BookService {
 		return repository.findAll(pageable).getContent().stream()
 				.map(bookConverter::toDto).collect(Collectors.toList());
 	}
-	
-	@Override
-	public List<BookDto> getBookListStatusOk(Pageable pageable) {
-		return repository.findByStatus(BookStatus.OK, pageable).stream()
-				.map(bookConverter::toDto).collect(Collectors.toList());
-	}
 
 	@Transactional
 	@Override

@@ -14,8 +14,6 @@ public interface BookService {
 	
 	public List<BookDto> getBookList(String title, String writer, Category[] categories, BookStatus[] statuses, Pageable pageable);
 	
-	public List<BookDto> getBookListStatusOk(Pageable pageable);
-	
 	public BookDto save(BookDto book);
 	
 	public BookDto getOne(Integer id);

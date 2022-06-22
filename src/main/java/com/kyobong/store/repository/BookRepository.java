@@ -9,7 +9,4 @@ import com.kyobong.store.enums.BookStatus;
 import com.kyobong.store.repository.querydsl.BookRepositoryCustom;
 
 public interface BookRepository extends JpaRepository<Book, Integer>, BookRepositoryCustom {
-
-	public Page<Book> findByStatus(BookStatus status, Pageable pageable);
-	
 }
