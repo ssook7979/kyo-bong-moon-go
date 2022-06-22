@@ -1,5 +1,8 @@
 package com.kyobong.store.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import lombok.Getter;
@@ -18,13 +21,21 @@ public enum Category {
 		this.displayName = displayName;
 	}
 	
+	public static List<String> getAllDisplayNames() {
+		List<String> names = new ArrayList<>();
+		for (Category category: Category.values()) {
+			names.add(category.displayName);
+		}
+		return names;
+	}
+	
 	public static Category getByDisplayName(String displayName) {
 		for (Category category: Category.values()) {
 			if (category.displayName.equals(displayName)) {
 				return category;
 			}
 		}
-		return null;
+		throw new IllegalArgumentException("The values accepted for this field is " + getAllDisplayNames());
 	}
 	
 }
